@@ -32,7 +32,7 @@ pipeline {
                     }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
-                        body: "Unit and Integration Test successful."
+                        body: "Unit and Integration Test successful.",
                         attachmentsPattern: 'test-success.log'
                 }
                 failure{
@@ -43,7 +43,7 @@ pipeline {
                     }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
-                        body: "Unit and Integration Test failed"
+                        body: "Unit and Integration Test failed",
                         attachmentsPattern: 'test-failure.log'
                 }
             }
@@ -76,7 +76,7 @@ pipeline {
                     }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
-                        body: "Security scan successful."
+                        body: "Security scan successful.",
                         attachmentsPattern: 'scan-success.log'
                 }
                 failure{
@@ -87,7 +87,7 @@ pipeline {
                     }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
-                        body: "Security scan failed"
+                        body: "Security scan failed",
                         attachmentsPattern: 'scan-failure.log'
                 }
             }
