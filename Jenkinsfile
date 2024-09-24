@@ -25,11 +25,21 @@ pipeline {
             }
             post {
                 success {
+                    script {
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        writeFile file: 'test-success.log', text: logContent
+                        archiveArtifacts artifacts: 'test-success.log', allowEmptyArchive: true
+                    }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test successful."
                 }
                 failure{
+                    script {
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        writeFile file: 'test-failure.log', text: logContent
+                        archiveArtifacts artifacts: 'Test-failure.log', allowEmptyArchive: true
+                    }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test failed"
@@ -57,11 +67,21 @@ pipeline {
             }
             post {
                 success {
+                    script {
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        writeFile file: 'scan-success.log', text: logContent
+                        archiveArtifacts artifacts: 'scan-success.log', allowEmptyArchive: true
+                    }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan successful."
                 }
                 failure{
+                    script {
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        writeFile file: 'scan-failure.log', text: logContent
+                        archiveArtifacts artifacts: 'scan-failure.log', allowEmptyArchive: true
+                    }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan failed"
