@@ -33,16 +33,18 @@ pipeline {
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test successful."
+                        attachmentsPattern: 'test-success.log'
                 }
                 failure{
                     script {
                         def logContent = currentBuild.rawBuild.getLog(100).join("\n")
                         writeFile file: 'test-failure.log', text: logContent
-                        archiveArtifacts artifacts: 'Test-failure.log', allowEmptyArchive: true
+                        archiveArtifacts artifacts: 'test-failure.log', allowEmptyArchive: true
                     }
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test failed"
+                        attachmentsPattern: 'test-failure.log'
                 }
             }
         }
@@ -75,6 +77,7 @@ pipeline {
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan successful."
+                        attachmentsPattern: 'scan-success.log'
                 }
                 failure{
                     script {
@@ -85,6 +88,7 @@ pipeline {
                     mail to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan failed"
+                        attachmentsPattern: 'scan-failure.log'
                 }
             }
         }
