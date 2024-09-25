@@ -94,8 +94,7 @@ pipeline {
                 to: "konellyskaishann@gmail.com", 
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
-                attachmentsPattern: 'unit-tests.log,security-scan.log',
-                recipientProviders: [culprits(), developers()],
+                attachmentsPattern: 'unit-tests.log,security-scan.log'
             )
         }
         failure {
@@ -103,8 +102,7 @@ pipeline {
                 to: "konellyskaishann@gmail.com",
                 subject: "Pipeline Failure: Logs Attached",
                 body: "The pipeline failed. Logs attached.",
-                attachmentsPattern: 'unit-tests.log,security-scan.log',
-                recipientProviders: [culprits(), developers()],
+                attachmentsPattern: 'unit-tests.log,security-scan.log'
             )
         }
     }
