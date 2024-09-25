@@ -87,14 +87,14 @@ pipeline {
     
     post {
         always {
-            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'unit-tests.log,security-scan.log', allowEmptyArchive: true
         }
         success {
             emailext(
                 to: "konellyskaishann@gmail.com", 
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
-                attachmentsPattern: '*.log'
+                attachmentsPattern: 'unit-tests.log,security-scan.log'
             )
         }
         failure {
@@ -102,7 +102,7 @@ pipeline {
                 to: "konellyskaishann@gmail.com",
                 subject: "Pipeline Failure: Logs Attached",
                 body: "The pipeline failed. Logs attached.",
-                attachmentsPattern: '*.log'
+                attachmentsPattern: 'unit-tests.log,security-scan.log'
             )
         }
     }
