@@ -90,12 +90,11 @@ pipeline {
             archiveArtifacts artifacts: 'unit-tests.log,security-scan.log', allowEmptyArchive: true
         }
         success {
-            emailext(
+            mail
                 to: "konellyskaishann@gmail.com", 
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
                 attachmentsPattern: 'unit-tests.log,security-scan.log'
-            )
         }
         failure {
             emailext(
