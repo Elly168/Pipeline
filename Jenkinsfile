@@ -28,6 +28,24 @@ pipeline {
                 // sh 'mvn test >> unit-tests.log 2>&1'
                 sh 'echo "Unit testing completed" >> unit-tests.log'
             }
+            post {
+                success {
+                    emailext(
+                        to: "konellyskaishann@gmail.com",
+                        subject: "Unit and Integration Tests Successful: Logs Attached",
+                        body: "The Unit and Integration Tests were successful. Logs attached.",
+                        attachmentsPattern: 'unit-tests.log'
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "konellyskaishann@gmail.com",
+                        subject: "Unit and Integration Tests Failed: Logs Attached",
+                        body: "The Unit and Integration Tests failed. Logs attached.",
+                        attachmentsPattern: 'unit-tests.log'
+                    )
+                }
+            }
         }
         
         stage('Code Analysis') {
@@ -50,8 +68,25 @@ pipeline {
                 // Redirect output of shell command to a log file
                 sh 'echo "Security scan started" > security-scan.log'
                 // Replace with actual security scan command
-                // sh 'snyk test --all-projects >> security-scan.log 2>&1'
                 sh 'echo "Security scan completed" >> security-scan.log'
+                post {
+                success {
+                    emailext(
+                        to: "konellyskaishann@gmail.com",
+                        subject: "Security Scan Successful: Logs Attached",
+                        body: "The Security Scan was successful. Logs attached.",
+                        attachmentsPattern: 'security-scan.log'
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "konellyskaishann@gmail.com",
+                        subject: "Security Scan Failed: Logs Attached",
+                        body: "The Security Scan failed. Logs attached.",
+                        attachmentsPattern: 'security-scan.log'
+                    )
+                }
+            }
             }
         }
         
@@ -90,20 +125,10 @@ pipeline {
             archiveArtifacts artifacts: 'unit-tests.log,security-scan.log', allowEmptyArchive: true
         }
         success {
-            emailext(
-                to: "konellyskaishann@gmail.com",
-                subject: "Pipeline Sucessfull: Logs Attached",
-                body: "The pipeline successful. Logs attached.",
-                attachmentsPattern: 'unit-tests.log,security-scan.log'
-            )
+            echo "Pipeline complete succesfully!"
         }
         failure {
-            emailext(
-                to: "konellyskaishann@gmail.com",
-                subject: "Pipeline Failure: Logs Attached",
-                body: "The pipeline failed. Logs attached.",
-                attachmentsPattern: 'unit-tests.log,security-scan.log'
-            )
+            echo "Pipeline failed!"
         }
     }
 }
