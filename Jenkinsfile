@@ -23,22 +23,27 @@ pipeline {
                 // Example commands (not executed here)
                 // sh 'mvn test'
                 // Redirect output of shell command to a log file
+                // Redirect output of shell command to a log file
+                sh 'echo "Unit testing started" > unit-tests.log'
+                // Replace with actual unit testing command
+                // sh 'mvn test >> unit-tests.log 2>&1'
+                sh 'echo "Unit testing completed" >> unit.log'
             }
             post {
                 success {
                     emailext(
-                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Successful: Logs Attached",
                         body: "The Unit and Integration Tests were successful. Logs attached.",
+                        attachmentsPattern: 'unit.log'
                     )
                 }
                 failure {
                     emailext(
-                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Failed: Logs Attached",
                         body: "The Unit and Integration Tests failed. Logs attached.",
+                        attachmentsPattern: 'unit.log'
                     )
                 }
             }
@@ -62,25 +67,25 @@ pipeline {
                 // Use Trivy to scan the local filesystem for known vulnerabilities
                 // sh 'trivy fs .'
                 // Redirect output of shell command to a log file
-                sh 'echo "Security scan started" > security-scan.log'
+                sh 'echo "Security scan started" > scan.log'
                 // Replace with actual security scan command
-                sh 'echo "Security scan completed" >> security-scan.log'
+                sh 'echo "Security scan completed" >> scan.log'
             }
             post {
                 success {
                     emailext(
-                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Successful: Logs Attached",
                         body: "The Security Scan was successful. Logs attached.",
+                        attachmentsPattern: 'scan.log'
                     )
                 }
                 failure {
                     emailext(
-                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Failed: Logs Attached",
                         body: "The Security Scan failed. Logs attached.",
+                        attachmentsPattern: 'scan.log'
                     )
                 }
             }
@@ -118,7 +123,7 @@ pipeline {
     
     post {
         always {
-            archiveArtifacts artifacts: 'unit-tests.log,security-scan.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'unit.log,scan.log', allowEmptyArchive: true
         }
         success {
             echo "Pipeline complete succesfully!"
