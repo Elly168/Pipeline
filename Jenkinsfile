@@ -77,7 +77,7 @@ pipeline {
                     emailext to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan successful.",
-                        attachments: 'scan-success.log'
+                        attachmentsPattern: 'scan-success.log'
                 }
                 failure{
                     script {
