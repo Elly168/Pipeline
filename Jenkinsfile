@@ -95,6 +95,7 @@ pipeline {
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
                 attachmentsPattern: 'unit-tests.log,security-scan.log'
+                recipientProviders: [culprits(), developers()],
             )
         }
         failure {
@@ -103,6 +104,7 @@ pipeline {
                 subject: "Pipeline Failure: Logs Attached",
                 body: "The pipeline failed. Logs attached.",
                 attachmentsPattern: 'unit-tests.log,security-scan.log'
+                recipientProviders: [culprits(), developers()],
             )
         }
     }
