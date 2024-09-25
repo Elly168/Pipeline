@@ -69,7 +69,8 @@ pipeline {
                 sh 'echo "Security scan started" > security-scan.log'
                 // Replace with actual security scan command
                 sh 'echo "Security scan completed" >> security-scan.log'
-                post {
+            }
+            post {
                 success {
                     emailext(
                         to: "konellyskaishann@gmail.com",
@@ -86,7 +87,6 @@ pipeline {
                         attachmentsPattern: 'security-scan.log'
                     )
                 }
-            }
             }
         }
         
