@@ -93,7 +93,7 @@ pipeline {
             mail to: "konellyskaishann@gmail.com", 
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
-                attachmentsPattern: 'unit-tests.log,security-scan.log'
+                attachments: 'unit-tests.log,security-scan.log'
         }
         failure {
             emailext(
