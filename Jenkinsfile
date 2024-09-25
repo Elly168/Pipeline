@@ -26,24 +26,24 @@ pipeline {
             post {
                 success {
                     script {
-                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
                         writeFile file: 'test-success.log', text: logContent
                         archiveArtifacts artifacts: 'test-success.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Success",
-                        body: "Unit and Integration Test successful.",
+                        body: "Unit and Integration Test successful. Logs attached.",
                         attachmentsPattern: 'test-success.log'
                 }
                 failure {
                     script {
-                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
                         writeFile file: 'test-failure.log', text: logContent
                         archiveArtifacts artifacts: 'test-failure.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Failure",
-                        body: "Unit and Integration Test failed.",
+                        body: "Unit and Integration Test failed. Logs attached.",
                         attachmentsPattern: 'test-failure.log'
                 }
             }
@@ -70,24 +70,24 @@ pipeline {
             post {
                 success {
                     script {
-                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
                         writeFile file: 'scan-success.log', text: logContent
                         archiveArtifacts artifacts: 'scan-success.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Success",
-                        body: "Security scan successful.",
+                        body: "Security scan completed successfully. Logs attached.",
                         attachmentsPattern: 'scan-success.log'
                 }
                 failure {
                     script {
-                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
+                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
                         writeFile file: 'scan-failure.log', text: logContent
                         archiveArtifacts artifacts: 'scan-failure.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Failure",
-                        body: "Security scan failed.",
+                        body: "Security scan failed. Logs attached.",
                         attachmentsPattern: 'scan-failure.log'
                 }
             }
@@ -124,11 +124,25 @@ pipeline {
     }
     
     post {
+        always {
+            echo "Archiving logs..."
+            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+        }
         success {
-            echo "Pipeline completed successfully!"
+            emailext(
+                to: "konellyskaishann@gmail.com",
+                subject: "Pipeline Success: Logs Attached",
+                body: "The pipeline completed successfully. Logs attached.",
+                attachmentsPattern: '*.log'
+            )
         }
         failure {
-            echo "Pipeline failed!"
+            emailext(
+                to: "konellyskaishann@gmail.com",
+                subject: "Pipeline Failure: Logs Attached",
+                body: "The pipeline failed. Logs attached.",
+                attachmentsPattern: '*.log'
+            )
         }
     }
 }
