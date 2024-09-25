@@ -30,10 +30,10 @@ pipeline {
                         writeFile file: 'test-success.log', text: logContent
                         archiveArtifacts artifacts: 'test-success.log', allowEmptyArchive: true
                     }
-                    mail to: "konellyskaishann@gmail.com",
+                    emailext to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test successful.",
-                        attachments: 'test-success.log'
+                        attachmentsPattern: 'test-success.log'
                 }
                 failure{
                     script {
@@ -41,10 +41,10 @@ pipeline {
                         writeFile file: 'test-failure.log', text: logContent
                         archiveArtifacts artifacts: 'test-failure.log', allowEmptyArchive: true
                     }
-                    mail to: "konellyskaishann@gmail.com",
+                    emailext to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests",
                         body: "Unit and Integration Test failed",
-                        attachments: 'test-failure.log'
+                        attachmentsPattern: 'test-failure.log'
                 }
             }
         }
@@ -74,7 +74,7 @@ pipeline {
                         writeFile file: 'scan-success.log', text: logContent
                         archiveArtifacts artifacts: 'scan-success.log', allowEmptyArchive: true
                     }
-                    mail to: "konellyskaishann@gmail.com",
+                    emailext to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan successful.",
                         attachments: 'scan-success.log'
@@ -85,10 +85,10 @@ pipeline {
                         writeFile file: 'scan-failure.log', text: logContent
                         archiveArtifacts artifacts: 'scan-failure.log', allowEmptyArchive: true
                     }
-                    mail to: "konellyskaishann@gmail.com",
+                    emailext to: "konellyskaishann@gmail.com",
                         subject: "Security Scan",
                         body: "Security scan failed",
-                        attachments: 'scan-failure.log'
+                        attachmentsPattern: 'scan-failure.log'
                 }
             }
         }
