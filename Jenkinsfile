@@ -26,24 +26,24 @@ pipeline {
             post {
                 success {
                     script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
                         writeFile file: 'test-success.log', text: logContent
                         archiveArtifacts artifacts: 'test-success.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
-                        subject: "Unit and Integration Tests",
+                        subject: "Unit and Integration Tests Success",
                         body: "Unit and Integration Test successful.",
                         attachmentsPattern: 'test-success.log'
                 }
-                failure{
+                failure {
                     script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
                         writeFile file: 'test-failure.log', text: logContent
                         archiveArtifacts artifacts: 'test-failure.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
-                        subject: "Unit and Integration Tests",
-                        body: "Unit and Integration Test failed",
+                        subject: "Unit and Integration Tests Failure",
+                        body: "Unit and Integration Test failed.",
                         attachmentsPattern: 'test-failure.log'
                 }
             }
@@ -62,32 +62,32 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo "Scanning for potential security risks!"
-                echo "Tool: Use Trivy "
+                echo "Tool: Use Trivy"
                 // Example command for Snyk (not executed here)
-                //  Use Trivy to scan the local filesystem for known vulnerabilities
+                // Use Trivy to scan the local filesystem for known vulnerabilities
                 // sh 'trivy fs .'
             }
             post {
                 success {
                     script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
                         writeFile file: 'scan-success.log', text: logContent
                         archiveArtifacts artifacts: 'scan-success.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
-                        subject: "Security Scan",
+                        subject: "Security Scan Success",
                         body: "Security scan successful.",
                         attachmentsPattern: 'scan-success.log'
                 }
-                failure{
+                failure {
                     script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n")
+                        def logContent = currentBuild.getLog(100).join("\n") // Use getLog instead of rawBuild
                         writeFile file: 'scan-failure.log', text: logContent
                         archiveArtifacts artifacts: 'scan-failure.log', allowEmptyArchive: true
                     }
                     emailext to: "konellyskaishann@gmail.com",
-                        subject: "Security Scan",
-                        body: "Security scan failed",
+                        subject: "Security Scan Failure",
+                        body: "Security scan failed.",
                         attachmentsPattern: 'scan-failure.log'
                 }
             }
