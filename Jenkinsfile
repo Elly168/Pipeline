@@ -22,30 +22,11 @@ pipeline {
                 echo "Tools: use JUnit or TestNG for unit test"
                 // Example commands (not executed here)
                 // sh 'mvn test'
-            }
-            post {
-                success {
-                    script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
-                        writeFile file: 'test-success.log', text: logContent
-                        archiveArtifacts artifacts: 'test-success.log', allowEmptyArchive: true
-                    }
-                    emailext to: "konellyskaishann@gmail.com",
-                        subject: "Unit and Integration Tests Success",
-                        body: "Unit and Integration Test successful. Logs attached.",
-                        attachmentsPattern: 'test-success.log'
-                }
-                failure {
-                    script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
-                        writeFile file: 'test-failure.log', text: logContent
-                        archiveArtifacts artifacts: 'test-failure.log', allowEmptyArchive: true
-                    }
-                    emailext to: "konellyskaishann@gmail.com",
-                        subject: "Unit and Integration Tests Failure",
-                        body: "Unit and Integration Test failed. Logs attached.",
-                        attachmentsPattern: 'test-failure.log'
-                }
+                // Redirect output of shell command to a log file
+                sh 'echo "Unit testing started" > unit-tests.log'
+                // Replace with actual unit testing command
+                // sh 'mvn test >> unit-tests.log 2>&1'
+                sh 'echo "Unit testing completed" >> unit-tests.log'
             }
         }
         
@@ -66,30 +47,11 @@ pipeline {
                 // Example command for Snyk (not executed here)
                 // Use Trivy to scan the local filesystem for known vulnerabilities
                 // sh 'trivy fs .'
-            }
-            post {
-                success {
-                    script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
-                        writeFile file: 'scan-success.log', text: logContent
-                        archiveArtifacts artifacts: 'scan-success.log', allowEmptyArchive: true
-                    }
-                    emailext to: "konellyskaishann@gmail.com",
-                        subject: "Security Scan Success",
-                        body: "Security scan completed successfully. Logs attached.",
-                        attachmentsPattern: 'scan-success.log'
-                }
-                failure {
-                    script {
-                        def logContent = currentBuild.rawBuild.getLog(100).join("\n") // Get the log
-                        writeFile file: 'scan-failure.log', text: logContent
-                        archiveArtifacts artifacts: 'scan-failure.log', allowEmptyArchive: true
-                    }
-                    emailext to: "konellyskaishann@gmail.com",
-                        subject: "Security Scan Failure",
-                        body: "Security scan failed. Logs attached.",
-                        attachmentsPattern: 'scan-failure.log'
-                }
+                // Redirect output of shell command to a log file
+                sh 'echo "Security scan started" > security-scan.log'
+                // Replace with actual security scan command
+                // sh 'snyk test --all-projects >> security-scan.log 2>&1'
+                sh 'echo "Security scan completed" >> security-scan.log'
             }
         }
         
@@ -125,12 +87,11 @@ pipeline {
     
     post {
         always {
-            echo "Archiving logs..."
             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
         }
         success {
             emailext(
-                to: "konellyskaishann@gmail.com",
+                to: "konellyskaishann@gmail.com", 
                 subject: "Pipeline Success: Logs Attached",
                 body: "The pipeline completed successfully. Logs attached.",
                 attachmentsPattern: '*.log'
