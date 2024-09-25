@@ -23,26 +23,22 @@ pipeline {
                 // Example commands (not executed here)
                 // sh 'mvn test'
                 // Redirect output of shell command to a log file
-                sh 'echo "Unit testing started" > unit-tests.log'
-                // Replace with actual unit testing command
-                // sh 'mvn test >> unit-tests.log 2>&1'
-                sh 'echo "Unit testing completed" >> unit-tests.log'
             }
             post {
                 success {
                     emailext(
+                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Successful: Logs Attached",
                         body: "The Unit and Integration Tests were successful. Logs attached.",
-                        attachmentsPattern: 'unit-tests.log'
                     )
                 }
                 failure {
                     emailext(
+                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Unit and Integration Tests Failed: Logs Attached",
                         body: "The Unit and Integration Tests failed. Logs attached.",
-                        attachmentsPattern: 'unit-tests.log'
                     )
                 }
             }
@@ -73,18 +69,18 @@ pipeline {
             post {
                 success {
                     emailext(
+                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Successful: Logs Attached",
                         body: "The Security Scan was successful. Logs attached.",
-                        attachmentsPattern: 'security-scan.log'
                     )
                 }
                 failure {
                     emailext(
+                        attachLog: true,
                         to: "konellyskaishann@gmail.com",
                         subject: "Security Scan Failed: Logs Attached",
                         body: "The Security Scan failed. Logs attached.",
-                        attachmentsPattern: 'security-scan.log'
                     )
                 }
             }
